@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BunnyChoom</title>
+  <style>
+    body {
+      margin: 0;
+      background: #6E7F8F;
+      color: #E57AB0;
+      font-family: "Fira Code", monospace;
+    }
+    #enter {
+      min-height: 100vh;
+      background: #111116;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .title { color: #E57AB0; font-size: 40px; margin: 0; }
+    #divider { width: 100%; max-width: 420px; margin: 20px 0; }
+    #enter-btn {
+      background: none;
+      border: 1px solid #E57AB0;
+      border-radius: 8px;
+      color: #F2A0CB;
+      font-family: inherit;
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #enter-btn:hover { color: #F2E36B; border-color: #F2E36B; }
+    #home {
+      display: none;
+    }
+    #back-btn {
+      background: none;
+      border: 1px solid #6BBFAF;
+      border-radius: 8px;
+      color: #6BBFAF;
+      font-family: inherit;
+      padding: 6px 14px;
+      cursor: pointer;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+    }
+    #back-btn:hover { color: #F2E36B; border-color: #F2E36B; }
+    #rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    header {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    .card {
+      background: #2E2F3A;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      color: #6BBFAF;
+      margin-top: 0;
+    }
+    a {
+      color: #F2B36B;
+    }
+  </style>
+</head>
+<body>
+  <div id="enter">
+    <h1 class="title">BunnyChoom</h1>
+    <img id="divider" src="data:image/png;base64,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" alt="bunny divider">
+    <button id="enter-btn">would you like to dive?</button>
+  </div>
+
+  <div id="home">
+    <header>
+      <button id="back-btn">&larr; back</button>
+      <h1>BunnyChoom</h1>
+      <p>red teaming · AI ethics · digital forensics</p>
+      <a href="https://github.com/BunnyChoom">github.com/BunnyChoom</a>
+    </header>
+    <main>
+      <div class="card">
+        <h2>tragic-loss</h2>
+        <p>PowerShell tool that searches drives for Wallpaper Engine projects.</p>
+        <a href="https://github.com/BunnyChoom/tragic-loss">view on GitHub</a>
+      </div>
+    </main>
+  </div>
+
+  <canvas id="rain"></canvas>
+
+  <script>
+    // --- pixel rain burst on click ---
+    const rain = document.getElementById("rain");
+    const ctx = rain.getContext("2d");
+    function fit() { rain.width = innerWidth; rain.height = innerHeight; }
+    fit();
+    addEventListener("resize", fit);
+
+    let bits = [];
+    addEventListener("click", function (e) {
+      const startHue = Math.random() * 360;
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1 + Math.random() * 4;
+        bits.push({
+          x: e.clientX, y: e.clientY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          hue: startHue,
+          life: 1
+        });
+      }
+    });
+
+    function tick() {
+      ctx.clearRect(0, 0, rain.width, rain.height);
+      for (const b of bits) {
+        b.x += b.vx;
+        b.y += b.vy;
+        b.vy += 0.08;
+        b.hue += 3;
+        b.life -= 0.015;
+        ctx.globalAlpha = Math.max(b.life, 0);
+        ctx.fillStyle = "hsl(" + b.hue + ", 70%, 85%)";
+        const px = 4;
+        ctx.fillRect(Math.round(b.x / px) * px, Math.round(b.y / px) * px, px, px);
+      }
+      ctx.globalAlpha = 1;
+      bits = bits.filter(b => b.life > 0);
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    document.getElementById("back-btn").addEventListener("click", function () {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("enter").style.display = "flex";
+    });
+
+
+    document.getElementById("enter-btn").addEventListener("click", function () {
+      document.getElementById("enter").style.display = "none";
+      document.getElementById("home").style.display = "block";
+    });
+  </script>
+</body>
+</html>
